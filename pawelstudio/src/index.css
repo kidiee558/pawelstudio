@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=Host+Grotesk:wght@300..800&family=Manrope:wght@400;500;600;700;800&family=Birthstone+Bounce&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'CloisterBlack';
+  src: url('/fonts/cloisterblack.ttf?v=2') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Anton", sans-serif;
+  --font-syne: "Syne", sans-serif;
+  --font-gravity: "ABC Gravity Variable", "Inter", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-host: "Host Grotesk", sans-serif;
+  --font-gothic: "CloisterBlack", cursive;
+  --font-birthstone: "Birthstone Bounce", cursive;
+}
+
+.word-flip-letter {
+  display: inline-block;
+  position: relative;
+  transform: translateZ(25px);
+  transform-origin: 50% 50% 25px;
+}
+
+.word-flip-letter.out {
+  transform: rotateX(90deg);
+  transition: transform 0.32s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.word-flip-letter.behind {
+  transform: rotateX(-90deg);
+}
+
+.word-flip-letter.in {
+  transform: rotateX(0deg);
+  transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Animation classes based on user request */
+.text { position: relative; height: 60px; display: inline-flex; justify-content: center; align-items: center; font-family: var(--font-syne); }
+.word { position: absolute; opacity: 0; white-space: nowrap; }
+.letter {
+  display: inline-block;
+  position: relative;
+  transform: translateZ(25px);
+  transform-origin: 50% 50% 25px;
+}
+.letter.out { transform: rotateX(90deg); transition: transform 0.32s cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+.letter.behind { transform: rotateX(-90deg); }
+.letter.in { transform: rotateX(0deg); transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+.wisteria, .belize, .pomegranate {
+  color: #000000 !important;
+}
+.green { color: #16a085; }
+.midnight { color: #2c3e50; }
+
+body {
+  background-color: #111;
+  color: #E6E1DC;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #111;
+}
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
