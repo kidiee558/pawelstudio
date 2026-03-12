@@ -724,7 +724,7 @@ const HomePage = () => {
                          setIsVideoPlaying(true);
                          if (videoRef.current) {
                            videoRef.current.play();
-                           videoRef.current.muted = false;
+                           videoRef.current.muted = true;
                          }
                        }}
                        className="flex items-center gap-2 bg-[#E6E1DC] text-black px-4 py-2 md:px-6 md:py-3.5 rounded-full text-[10px] md:text-xs font-sans font-bold uppercase tracking-[0.1em] hover:scale-105 transition-transform shadow-xl"
