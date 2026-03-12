@@ -386,7 +386,7 @@ const GlobeBackground = ({ maskColor }: { maskColor?: any }) => {
   );
 };
 
-const Preloader = ({ onComplete }: { onComplete: () => void }) => {
+const Preloader = ({ onComplete, ...props }: { onComplete: () => void, key?: string }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -775,10 +775,14 @@ const HomePage = () => {
                    onMouseLeave={textLeave}
                  >
                    <span className="text-[#E6E1DC] block font-bold py-2 -my-2">
-                     Liczby, które <span className="font-extrabold">budują</span>
+                     Liczby, które
+                   </span>
+                   <span className="text-[#E6E1DC] block font-extrabold py-2 -my-2">
+                     budują
                    </span>
                    <span className="text-[#E6E1DC] block font-extrabold py-2 -my-2 text-[0.92em]">
-                     zaufanie</span>
+                     zaufanie
+                   </span>
                  </h3>
                  <p className="text-xl md:text-2xl opacity-100 leading-[1.3] md:leading-relaxed font-manrope font-normal tracking-tight">
                    Ponad 8 lat doświadczenia w dostarczaniu rozwiązań cyfrowych, które realnie wpływają na rozwój biznesu moich klientów.
@@ -1274,22 +1278,25 @@ const AutoTypewriterText = ({ text, delay = 0, onComplete, className = "" }: { t
   const lines = text.split("\n");
   
   const container = {
-    hidden: { opacity: 1 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.01, delayChildren: delay },
+      transition: { staggerChildren: 0.05, delayChildren: delay },
     },
   };
 
   const child = {
     visible: {
       opacity: 1,
+      y: 0,
       transition: {
-        duration: 0.01,
+        duration: 0.4,
+        ease: "easeOut"
       },
     },
     hidden: {
       opacity: 0,
+      y: 10,
     },
   };
 
@@ -1372,7 +1379,7 @@ const PinnedInvestmentSection = () => {
   ];
 
   return (
-    <section ref={containerRef} className="relative bg-gradient-to-b from-[#111] to-[#E6E1DC] text-[#E6E1DC]">
+    <section ref={containerRef} className="relative bg-[#111] text-[#E6E1DC]">
       <div className="relative">
         <div className="min-h-screen flex flex-col justify-start overflow-hidden w-full relative">
             
@@ -1386,73 +1393,30 @@ const PinnedInvestmentSection = () => {
             {/* Scrolling Texts Container */}
             <div className="relative z-10 w-full flex-grow overflow-visible px-4 md:px-10 pb-20">
                 <div 
-                    className="flex flex-col gap-10 md:gap-16 pb-0 pt-12 md:pt-24 mix-blend-difference"
+                    className="flex flex-col gap-10 md:gap-16 pb-0 pt-12 md:pt-24 mix-blend-normal"
                 >
                     {/* Main Text - Centered */}
-                    <motion.div 
-                        initial={{ color: "#E6E1DC" }}
-                        animate={currentStep >= 1 ? { color: "#E6E1DC" } : { color: "#E6E1DC" }}
-                        transition={{ duration: 0.5 }}
-                        className="w-[95%] md:w-[85%] lg:w-[80%] self-center text-[4.2vw] md:text-[2.5vw] lg:text-[2.2vw] font-manrope font-light tracking-tight leading-[1.1] text-center drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
-                    >
-                        {currentStep >= 1 && (
-                            <AutoTypewriterText 
-                                text="Tworzę narzędzie nastawione na Twój zysk. Zamiast wisieć w sieci, zacznij zgarniać zlecenia. Wyciągam Twoją firmę na szczyt wyszukiwarki i wyróżniam Cię na tle konkurencji, byś to Ty był pierwszym wyborem klienta."
-                                className="justify-center"
-                                onComplete={() => setCurrentStep(2)}
-                            />
-                        )}
-                    </motion.div>
+                    <div className="w-[95%] md:w-[85%] lg:w-[80%] self-center text-[4.2vw] md:text-[2.5vw] lg:text-[2.2vw] font-manrope font-light tracking-tight leading-[1.1] text-center drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-[#E6E1DC]">
+                        Tworzę narzędzie nastawione na Twój zysk. Zamiast wisieć w sieci, zacznij zgarniać zlecenia. Wyciągam Twoją firmę na szczyt wyszukiwarki i wyróżniam Cię na tle konkurencji, byś to Ty był pierwszym wyborem klienta.
+                    </div>
 
                     {/* Separator */}
-                    <motion.div 
-                        initial={{ opacity: 0, scaleX: 0 }}
-                        animate={currentStep >= 2 ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="w-12 md:w-20 h-[1px] bg-[#E6E1DC]/30 mx-auto"
-                    />
+                    <div className="w-12 md:w-20 h-[1px] bg-[#E6E1DC]/30 mx-auto" />
 
                     {/* Secondary Text - Centered */}
-                    <motion.div 
-                        initial={{ color: "#E6E1DC" }}
-                        animate={currentStep >= 2 ? { color: "#E6E1DC" } : { color: "#E6E1DC" }}
-                        transition={{ duration: 0.5 }}
-                        className="w-[95%] md:w-[85%] lg:w-[80%] self-center text-center text-[4.2vw] md:text-[2.5vw] lg:text-[2.2vw] font-manrope font-light tracking-tight leading-[1.1] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
-                    >
-                        {currentStep >= 2 && (
-                            <AutoTypewriterText 
-                                text={"Traktuj swoją stronę jako inwestycję, która\nma zarabiać, a nie generować koszty. Dzięki współpracy ze mną zyskujesz narzędzie, które buduje Twój autorytet i realnie domyka sprzedaż."}
-                                className="justify-center"
-                                onComplete={() => setCurrentStep(3)}
-                            />
-                        )}
-                    </motion.div>
+                    <div className="w-[95%] md:w-[85%] lg:w-[80%] self-center text-center text-[4.2vw] md:text-[2.5vw] lg:text-[2.2vw] font-manrope font-light tracking-tight leading-[1.1] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-[#E6E1DC] whitespace-pre-line">
+                        {"Traktuj swoją stronę jako inwestycję, która\nma zarabiać, a nie generować koszty. Dzięki współpracy ze mną zyskujesz narzędzie, które buduje Twój autorytet i realnie domyka sprzedaż."}
+                    </div>
 
                     {/* New Centered Texts */}
-                    <div className="flex flex-col items-center gap-6 mt-4 md:mt-6 border-t border-[#E6E1DC]/10 pt-12 md:pt-24">
-                        <motion.div 
-                            initial={{ opacity: 0, y: 20, color: "#E6E1DC" }}
-                            animate={currentStep >= 3 ? { opacity: 1, y: 0, color: "#E6E1DC" } : { opacity: 0, y: 20, color: "#E6E1DC" }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            onAnimationComplete={() => {
-                                if (currentStep === 3) setCurrentStep(4);
-                            }}
-                            className="w-full md:w-[70%] text-center text-[5vw] sm:text-[4vw] md:text-[3vw] lg:text-[2.8vw] font-syne font-bold uppercase tracking-tighter leading-[1.3] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
-                        >
+                    <div className="flex flex-col items-center gap-6 mt-4 md:mt-6 border-t border-[#E6E1DC]/30 pt-12 md:pt-24">
+                        <div className="w-full md:w-[70%] text-center text-[5vw] sm:text-[4vw] md:text-[3vw] lg:text-[2.8vw] font-syne font-bold uppercase tracking-tighter leading-[1.3] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-[#E6E1DC]">
                             Gotów na krok do przodu?
-                        </motion.div>
+                        </div>
 
-                        <motion.div 
-                            initial={{ opacity: 0, y: 20, color: "#E6E1DC" }}
-                            animate={currentStep >= 4 ? { opacity: 1, y: 0, color: "#E6E1DC" } : { opacity: 0, y: 20, color: "#E6E1DC" }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            onAnimationComplete={() => {
-                                if (currentStep === 4) setCurrentStep(5);
-                            }}
-                            className="w-[90%] sm:w-[75%] md:w-[60%] lg:w-[50%] text-center text-[4vw] sm:text-[2.8vw] md:text-[1.8vw] lg:text-[1.4vw] font-manrope font-light tracking-tight leading-[1.4] [text-shadow:_0_2px_4px_rgb(0_0_0_/_70%)]"
-                        >
+                        <div className="w-[90%] sm:w-[75%] md:w-[60%] lg:w-[50%] text-center text-[4vw] sm:text-[2.8vw] md:text-[1.8vw] lg:text-[1.4vw] font-manrope font-light tracking-tight leading-[1.4] [text-shadow:_0_2px_4px_rgb(0_0_0_/_70%)] text-[#E6E1DC]">
                             Tam, gdzie agencje szukają dodatkowych opłat, ja daję Ci gotowe rozwiązanie w cenie. Zdejmuję z Ciebie techniczne koszty, byś mógł od razu skupić się na zarabianiu, a nie na kolejnych fakturach.
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1460,21 +1424,18 @@ const PinnedInvestmentSection = () => {
       </div>
 
       {/* Features List - Outside Sticky - Scrolls naturally after texts */}
-      <div className="relative z-20 py-8 md:py-12 text-[#111]">
-          <div className="flex flex-col w-full max-w-5xl mx-auto border-t border-[#111]/20 px-4 md:px-0">
+      <div className="relative z-20 py-8 md:py-12 text-[#E6E1DC]">
+          <div className="flex flex-col w-full max-w-5xl mx-auto border-t border-[#E6E1DC]/20 px-4 md:px-0">
               {features.map((feature, i) => (
-                  <motion.div
+                  <div
                       key={i}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={currentStep >= 5 ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                      transition={{ delay: i * 0.1, duration: 0.5 }}
-                      className="group flex flex-col border-b border-[#111]/20 transition-colors duration-500 cursor-pointer overflow-hidden"
+                      className="group flex flex-col border-b border-[#E6E1DC]/20 transition-colors duration-500 cursor-pointer overflow-hidden"
                       onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
                   >
-                      <div className="flex items-center justify-between py-5 md:py-8 px-4 md:px-8 group-hover:bg-[#111] group-hover:text-[#E6E1DC] transition-colors duration-500">
+                      <div className="flex items-center justify-between py-5 md:py-8 px-4 md:px-8 group-hover:bg-[#E6E1DC] group-hover:text-[#111] transition-colors duration-500">
                           <div className="flex items-center gap-4 md:gap-12 flex-1 pr-4">
                               <span className="text-[12px] md:text-[14px] font-mono opacity-60 group-hover:opacity-100 shrink-0">{feature.icon}</span>
-                              <span className="text-[16px] sm:text-[18px] md:text-[28px] lg:text-[32px] font-syne font-bold tracking-tight uppercase text-[#111] group-hover:text-[#E6E1DC] leading-tight">{feature.label}</span>
+                              <span className="text-[16px] sm:text-[18px] md:text-[28px] lg:text-[32px] font-syne font-bold tracking-tight uppercase text-[#E6E1DC] group-hover:text-[#111] leading-tight">{feature.label}</span>
                           </div>
                           <div className="flex items-center justify-end gap-2 md:gap-4 shrink-0">
                               <span className="text-[8px] md:text-[10px] font-mono opacity-40 group-hover:opacity-100 transition-opacity text-right leading-tight">
@@ -1482,34 +1443,22 @@ const PinnedInvestmentSection = () => {
                                   <span className="hidden md:inline"> </span>
                                   <span className="block md:inline">ROZWINĄĆ</span>
                               </span>
-                              <motion.div
-                                  animate={{ rotate: expandedIndex === i ? 45 : 0 }}
-                                  transition={{ duration: 0.3 }}
-                                  className="shrink-0"
-                              >
-                                  <Plus className="opacity-40 group-hover:opacity-100 transition-all text-[#111] group-hover:text-[#E6E1DC]" size={isMobile ? 20 : 32} />
-                              </motion.div>
+                              <div>
+                                  <Plus className="opacity-40 group-hover:opacity-100 transition-all text-[#E6E1DC] group-hover:text-[#111]" size={isMobile ? 20 : 32} />
+                              </div>
                           </div>
                       </div>
                       
-                      <AnimatePresence>
-                          {expandedIndex === i && (
-                              <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                                  className="bg-[#111]/5"
-                              >
-                                  <div className="px-8 md:px-24 py-8 md:py-12">
-                                      <p className="text-[16px] md:text-[20px] lg:text-[22px] font-manrope font-normal leading-relaxed max-w-2xl text-[#111]">
-                                          {feature.description}
-                                      </p>
-                                  </div>
-                              </motion.div>
-                          )}
-                      </AnimatePresence>
-                  </motion.div>
+                      {expandedIndex === i && (
+                          <div className="bg-[#E6E1DC]/5">
+                              <div className="px-8 md:px-24 py-8 md:py-12">
+                                  <p className="text-[16px] md:text-[20px] lg:text-[22px] font-manrope font-normal leading-relaxed max-w-2xl text-[#E6E1DC]">
+                                      {feature.description}
+                                  </p>
+                              </div>
+                          </div>
+                      )}
+                  </div>
               ))}
           </div>
       </div>
@@ -2237,7 +2186,7 @@ const Footer = () => {
     const formData = new FormData(e.currentTarget);
     
     // Klucz dostępu Web3Forms - dodaj go w pliku .env jako VITE_WEB3FORMS_ACCESS_KEY
-    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+    const accessKey = (import.meta as any).env.VITE_WEB3FORMS_ACCESS_KEY;
     
     if (!accessKey) {
       alert("Brak klucza Web3Forms! Dodaj VITE_WEB3FORMS_ACCESS_KEY w ustawieniach (Environment Variables).");
