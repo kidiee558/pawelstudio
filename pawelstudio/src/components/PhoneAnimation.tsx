@@ -121,8 +121,7 @@ const PhoneAnimation = () => {
                   playsInline
                   webkit-playsinline="true"
                 >
-                  <source src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/wideo%20do%20telefonu.mov" type="video/quicktime" />
-                  <source src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/wideo%20do%20telefonu.mov" type="video/mp4" />
+                  <source src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/WIDEOTELEFON1.mp4" type="video/mp4" />
                 </video>
             </div>
             <div className="status-bar">
