@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useInView, useAnimationFrame, useMotionValue } from 'motion/react';
-import { ArrowUpRight, Play, Plus, ArrowLeft, ArrowRight, Globe, MapPin, Menu, X } from 'lucide-react';
+import { ArrowUpRight, Play, Plus, ArrowLeft, ArrowRight, Globe, MapPin, Menu, X, Copy, Phone } from 'lucide-react';
 import { BrowserRouter, Routes, Route, Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 import PhoneAnimation from './components/PhoneAnimation';
 
@@ -197,13 +197,15 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }: { isMenuOpen: boolean, setIsMenuO
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('/#') && location.pathname === '/') {
+    const id = href.replace('/#', '');
+    const element = document.getElementById(id);
+    
+    if (element) {
       e.preventDefault();
-      const id = href.replace('/#', '');
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMenuOpen(false);
+    } else if (href.startsWith('/#') && location.pathname === '/') {
+      e.preventDefault();
       setIsMenuOpen(false);
     }
   };
@@ -231,7 +233,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }: { isMenuOpen: boolean, setIsMenuO
               onClick={(e) => handleNavClick(e, link.href)}
               className="hover:opacity-50 transition-opacity flex items-center gap-2"
             >
-              {link.name === "O MNIE" ? <div className="w-1.5 h-1.5 bg-[#F27D26] rounded-full"></div> : <Plus size={12} />}
+              <Plus size={12} />
               {link.name}
             </Link>
           ))}
@@ -265,7 +267,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }: { isMenuOpen: boolean, setIsMenuO
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ type: "tween", duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 bg-[#0a0a0a] z-[90] flex flex-col items-center justify-center gap-8 md:hidden"
+            className="fixed inset-0 bg-[#0a0a0a] z-[90] flex flex-col items-center justify-start pt-32 gap-8 md:hidden"
           >
             <nav className="flex flex-col items-center gap-8">
               {navLinks.map((link, i) => (
@@ -281,7 +283,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }: { isMenuOpen: boolean, setIsMenuO
                       handleNavClick(e, link.href);
                       setIsMenuOpen(false);
                     }} 
-                    className="text-3xl font-syne font-bold uppercase tracking-tighter hover:text-[#F27D26] transition-colors"
+                    className="text-white text-3xl font-syne font-bold uppercase tracking-tighter hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all"
                   >
                     {link.name}
                   </Link>
@@ -294,8 +296,11 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }: { isMenuOpen: boolean, setIsMenuO
               >
                 <Link 
                   to="/#contact" 
-                  onClick={() => setIsMenuOpen(false)} 
-                  className="text-3xl font-syne font-bold uppercase tracking-tighter hover:text-[#F27D26] transition-colors"
+                  onClick={(e) => {
+                    handleNavClick(e, '/#contact');
+                    setIsMenuOpen(false);
+                  }} 
+                  className="text-white text-3xl font-syne font-bold uppercase tracking-tighter hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all"
                 >
                   KONTAKT
                 </Link>
@@ -308,8 +313,13 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }: { isMenuOpen: boolean, setIsMenuO
                 transition={{ delay: 0.5 }}
                 className="absolute bottom-12 flex flex-col items-center gap-4 text-sm font-sans text-neutral-400"
               >
-                <a href="mailto:kontakt@pawelstudio.pl" className="hover:text-[#E6E1DC] transition-colors">kontakt@pawelstudio.pl</a>
-                <a href="tel:+48123456789" className="hover:text-[#E6E1DC] transition-colors">+48 123 456 789</a>
+                <a href="tel:+48795042610" className="flex items-center gap-2 hover:text-white transition-colors">
+                  <Phone size={16} />
+                  +48 795 042 610
+                </a>
+                <a href="mailto:pawel.webdev@protonmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
+                  pawel.webdev@protonmail.com
+                </a>
               </motion.div>
           </motion.div>
         )}
@@ -376,16 +386,131 @@ const GlobeBackground = ({ maskColor }: { maskColor?: any }) => {
   );
 };
 
-export default function App() {
+const Preloader = ({ onComplete }: { onComplete: () => void }) => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    // List of critical assets to preload
+    const assets = [
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/film%20na%20homepage.mov",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/brazowymonitorwideo.mp4",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/zielonytel.mov",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/Timeline%201.mp4",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/laptopmorytzauto.mov",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/tabletolaptopwideo.mov",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/telefonpink.mov",
+      "https://i.ibb.co/4Rs8nf7w/apple-pro-display-xdr-roundup-header-800x564.webp",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/wideo%20do%20telefonu.mov"
+    ];
+
+    let loadedCount = 0;
+    const totalAssets = assets.length;
+    let isComplete = false;
+
+    const handleAssetLoad = () => {
+      if (isComplete) return;
+      loadedCount++;
+      setProgress(Math.round((loadedCount / totalAssets) * 100));
+      if (loadedCount === totalAssets) {
+        isComplete = true;
+        setTimeout(onComplete, 800); // small delay for smooth transition
+      }
+    };
+
+    assets.forEach((src) => {
+      if (src.endsWith('.mp4') || src.endsWith('.mov')) {
+        const video = document.createElement('video');
+        video.src = src;
+        video.preload = 'auto';
+        video.muted = true;
+        video.playsInline = true;
+        video.oncanplaythrough = handleAssetLoad;
+        video.onerror = handleAssetLoad; // Continue even if one fails
+        video.load();
+      } else {
+        const img = new Image();
+        img.src = src;
+        img.onload = handleAssetLoad;
+        img.onerror = handleAssetLoad;
+      }
+    });
+
+    // Fallback timeout in case some assets hang (e.g., slow network)
+    const timeout = setTimeout(() => {
+      if (!isComplete) {
+        isComplete = true;
+        setProgress(100);
+        onComplete();
+      }
+    }, 10000); // 10 seconds max loading
+
+    return () => clearTimeout(timeout);
+  }, [onComplete]);
+
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/o-mnie" element={<AboutMePage />} />
-        <Route path="/oferta/:serviceId" element={<ServiceDetailPage />} />
-      </Routes>
-    </BrowserRouter>
+    <motion.div
+      initial={{ y: 0 }}
+      exit={{ y: "-100%" }}
+      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+      className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center"
+    >
+      <div className="relative z-10 flex flex-col items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+          className="w-[200px] h-[200px] md:w-[300px] md:h-[300px] relative"
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
+            <path
+              id="preloaderCirclePath"
+              d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"
+              fill="transparent"
+            />
+            <text className="text-[6px] font-syne font-bold uppercase tracking-[0.50em] fill-[#E6E1DC]">
+              <textPath 
+                href="#preloaderCirclePath" 
+                startOffset="0%" 
+                textLength="219.9" 
+                lengthAdjust="spacing"
+              >
+                PAWELSTUDIO - PAWEL STUDIO - PAWELSTUDIO - PAWEL STUDIO - 
+              </textPath>
+            </text>
+          </svg>
+        </motion.div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
+          <div className="text-[10px] md:text-xs font-mono text-[#E6E1DC]/50 tracking-widest uppercase">
+            Ładowanie
+          </div>
+          <div className="text-sm md:text-base font-mono text-[#E6E1DC] tracking-widest">
+            {progress}%
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+export default function App() {
+  const [isAppLoaded, setIsAppLoaded] = useState(false);
+
+  return (
+    <>
+      <AnimatePresence>
+        {!isAppLoaded && <Preloader key="preloader" onComplete={() => setIsAppLoaded(true)} />}
+      </AnimatePresence>
+      
+      {isAppLoaded && (
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/o-mnie" element={<AboutMePage />} />
+            <Route path="/oferta/:serviceId" element={<ServiceDetailPage />} />
+          </Routes>
+        </BrowserRouter>
+      )}
+    </>
   );
 }
 
@@ -476,7 +601,7 @@ const HomePage = () => {
     <motion.div 
       ref={containerRef} 
       style={{ color: textColor, backgroundColor: bgColor }}
-      className="min-h-screen font-sans selection:bg-[#E6E1DC] selection:text-[#111] relative overflow-x-hidden w-full"
+      className="min-h-screen font-sans selection:bg-[#E6E1DC] selection:text-[#111] relative"
     >
       {/* Global Background Pattern (Lines) */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -584,6 +709,8 @@ const HomePage = () => {
                   loop 
                   playsInline
                   webkit-playsinline="true"
+                  disablePictureInPicture
+                  disableRemotePlayback
                   className="w-full h-full object-cover"
                   style={{ backgroundColor: "#050505" }}
                 >
@@ -672,6 +799,9 @@ const HomePage = () => {
                      muted
                      loop
                      playsInline
+                     webkit-playsinline="true"
+                     disablePictureInPicture
+                     disableRemotePlayback
                    />
                 </div>
 
@@ -684,6 +814,9 @@ const HomePage = () => {
                      muted
                      loop
                      playsInline
+                     webkit-playsinline="true"
+                     disablePictureInPicture
+                     disableRemotePlayback
                    />
                 </div>
 
@@ -696,6 +829,9 @@ const HomePage = () => {
                      muted
                      loop
                      playsInline
+                     webkit-playsinline="true"
+                     disablePictureInPicture
+                     disableRemotePlayback
                    />
                 </div>
 
@@ -708,6 +844,9 @@ const HomePage = () => {
                      muted
                      loop
                      playsInline
+                     webkit-playsinline="true"
+                     disablePictureInPicture
+                     disableRemotePlayback
                    />
                 </div>
 
@@ -720,6 +859,9 @@ const HomePage = () => {
                      muted
                      loop
                      playsInline
+                     webkit-playsinline="true"
+                     disablePictureInPicture
+                     disableRemotePlayback
                    />
                 </div>
 
@@ -732,6 +874,9 @@ const HomePage = () => {
                      muted
                      loop
                      playsInline
+                     webkit-playsinline="true"
+                     disablePictureInPicture
+                     disableRemotePlayback
                    />
                 </div>
              </div>
@@ -742,7 +887,7 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="pt-16 pb-20 md:py-64 relative z-30 flex flex-col items-center justify-center text-center px-4 w-full">
+      <section className="pt-16 pb-20 md:py-64 relative z-30 flex flex-col items-center justify-center text-center px-4 w-full overflow-hidden">
         <div className="relative w-full flex flex-col items-center justify-center">
           <GlobeBackground maskColor={bgColor} />
           <h2 
@@ -763,6 +908,7 @@ const HomePage = () => {
           </p>
 
           <motion.button
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             style={{ backgroundColor: textColor, color: bgColor }}
@@ -1000,7 +1146,7 @@ const AboutMePage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[#E6E1DC] text-[#111] min-h-screen p-8 md:p-24 relative overflow-x-hidden w-full"
+      className="bg-[#E6E1DC] text-[#111] min-h-screen p-8 md:p-24 relative"
     >
       <div className="fixed top-0 left-0 w-full p-8 z-[100] pointer-events-none">
         <button 
@@ -1550,7 +1696,7 @@ const PinnedProjectsShowcase = () => {
                         </motion.span>
                         
                             <h2 className="relative z-10 text-3xl md:text-8xl font-syne font-extrabold uppercase tracking-tighter text-center leading-none text-[#E6E1DC] drop-shadow-2xl">
-                            WYKONANYCH<br/>PROJEKTÓW
+                            WYKONANE<br/>PROJEKTY
                         </h2>
                     </motion.div>
                 </div>
@@ -1710,7 +1856,7 @@ const WebsitesPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[#E6E1DC] text-[#111] min-h-screen font-sans relative z-10 overflow-x-hidden w-full"
+      className="bg-[#E6E1DC] text-[#111] min-h-screen font-sans relative z-10"
     >
         {/* Premium Background */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -1807,7 +1953,10 @@ const WebsitesPage = () => {
                                 </p>
 
                                 <div className="flex flex-col sm:flex-row gap-8 items-start sm:items-center">
-                                    <button className="group relative px-8 py-3.5 bg-transparent text-[#E6E1DC] font-sans text-[11px] font-bold uppercase tracking-[0.2em] overflow-hidden transition-all hover:bg-[#E6E1DC] hover:text-black">
+                                    <button 
+                                        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                                        className="group relative px-8 py-3.5 bg-transparent text-[#E6E1DC] font-sans text-[11px] font-bold uppercase tracking-[0.2em] overflow-hidden transition-all hover:bg-[#E6E1DC] hover:text-black"
+                                    >
                                         <div className="absolute inset-0 border border-[#E6E1DC]/30" style={{ clipPath: "polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)" }}></div>
                                         <span className="relative z-10">SKONTAKTUJ SIĘ</span>
                                     </button>
@@ -1960,7 +2109,7 @@ const WebsitesPage = () => {
                 </section>
 
                 {/* CTA Section (Replaced with Globe version) */}
-                <section className="pt-16 pb-20 md:py-64 relative z-30 flex flex-col items-center justify-center text-center px-4 w-full border-t border-[#E6E1DC]/10">
+                <section className="pt-16 pb-20 md:py-64 relative z-30 flex flex-col items-center justify-center text-center px-4 w-full border-t border-[#E6E1DC]/10 overflow-hidden">
                     <div className="relative w-full flex flex-col items-center justify-center">
                         <GlobeBackground maskColor="transparent" />
                         <h2 className="text-[6vw] md:text-[5vw] leading-[0.85] font-syne uppercase tracking-tighter text-center flex flex-col items-center overflow-visible mb-8 relative z-10 text-[#E6E1DC]">
@@ -1976,11 +2125,9 @@ const WebsitesPage = () => {
                             Skontaktuj się ze mną, a przygotuję dla Ciebie wstępną koncepcję i wycenę bez żadnych zobowiązań.
                         </p>
 
-                        <Link to="/#contact" onClick={(e) => {
-                            if (location.pathname === '/') {
-                                e.preventDefault();
-                                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                            }
+                        <a href="#contact" onClick={(e) => {
+                            e.preventDefault();
+                            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                         }}>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
@@ -1989,7 +2136,7 @@ const WebsitesPage = () => {
                             >
                                 Napisz do mnie <ArrowUpRight size={18} />
                             </motion.button>
-                        </Link>
+                        </a>
                     </div>
                 </section>
 
@@ -2018,7 +2165,7 @@ const ServiceDetailPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[#E6E1DC] text-[#111] min-h-screen relative flex items-center justify-center overflow-hidden w-full"
+      className="bg-[#E6E1DC] text-[#111] min-h-screen relative flex items-center justify-center overflow-hidden"
     >
       {/* Background Lines */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
@@ -2075,6 +2222,13 @@ const Footer = () => {
   const opacity = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
 
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText('pawel.webdev@protonmail.com');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -2144,15 +2298,26 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center w-full">
             {/* Left: Contact Info */}
             <div className="flex flex-col items-center overflow-hidden w-full text-center">
-              <a 
-                href="mailto:pawel.webdev@protonmail.com" 
-                className="text-[12vw] md:text-6xl lg:text-8xl font-syne font-bold hover:opacity-50 transition-opacity uppercase tracking-tighter leading-none mb-8 break-all max-w-full"
+              <div 
+                className="text-[12vw] md:text-6xl lg:text-8xl font-syne font-bold uppercase tracking-tighter leading-none mb-8 break-all max-w-full cursor-default"
               >
                 KONTAKT
-              </a>
+              </div>
               <div className="flex flex-col gap-4 font-sans text-[4.5vw] md:text-xl uppercase tracking-[0.1em] font-semibold opacity-70 items-center w-full">
-                <a href="mailto:pawel.webdev@protonmail.com" className="hover:text-white transition-colors break-all px-4 w-full text-center">pawel.webdev@protonmail.com</a>
-                <a href="tel:+48795042610" className="hover:text-white transition-colors">+48 795 042 610</a>
+                <div className="flex items-center gap-3 justify-center w-full">
+                  <button onClick={handleCopy} className="hover:text-white transition-colors whitespace-nowrap text-[3.2vw] sm:text-[3.5vw] md:text-xl cursor-pointer">
+                    {copied ? "SKOPIOWANO!" : "pawel.webdev@protonmail.com"}
+                  </button>
+                  <button onClick={handleCopy} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Skopiuj email">
+                    <Copy className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex items-center gap-3 justify-center w-full">
+                  <a href="tel:+48795042610" className="hover:text-white transition-colors whitespace-nowrap">+48 795 042 610</a>
+                  <a href="tel:+48795042610" className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Zadzwoń">
+                    <Phone className="w-4 h-4" />
+                  </a>
+                </div>
                 
                 <div className="mt-8 flex flex-col gap-4 text-sm md:text-base font-bold opacity-60 font-sans tracking-[0.15em] items-center">
                   <div className="flex items-center gap-3">
