@@ -65,14 +65,14 @@
 html, body {
   background-color: #111;
   color: #E6E1DC;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   margin: 0;
   padding: 0;
 }
 
 #root {
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
 }
 
