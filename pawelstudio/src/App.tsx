@@ -388,19 +388,20 @@ const GlobeBackground = ({ maskColor }: { maskColor?: any }) => {
 
 const Preloader = ({ onComplete, ...props }: { onComplete: () => void, key?: string }) => {
   const [progress, setProgress] = useState(0);
+  const [loadingText, setLoadingText] = useState("Inicjalizacja...");
 
   useEffect(() => {
     // List of critical assets to preload
     const assets = [
-      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/film%20na%20homepage.mov",
-      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/brazowymonitorwideo.mp4",
-      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/zielonytel.mov",
-      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/Timeline%201.mp4",
-      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/laptopmorytzauto.mov",
-      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/tabletolaptopwideo.mov",
-      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/telefonpink.mov",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/FILMHOMEPAGE1.mp4",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/BRAZOWYMONITOR1.mp4",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/ZIELONYTELEFON1.mp4",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/POMARANCZOWYMONITOR1.mp4",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/LAPTOPMORYTZAUTO1.mp4",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/NIEBIESKIMONITOR1.mp4",
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/TELEFONPINK1.mp4",
       "https://i.ibb.co/4Rs8nf7w/apple-pro-display-xdr-roundup-header-800x564.webp",
-      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/wideo%20do%20telefonu.mov"
+      "https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/WIDEOTELEFON1.mp4"
     ];
 
     let loadedCount = 0;
@@ -410,10 +411,16 @@ const Preloader = ({ onComplete, ...props }: { onComplete: () => void, key?: str
     const handleAssetLoad = () => {
       if (isComplete) return;
       loadedCount++;
-      setProgress(Math.round((loadedCount / totalAssets) * 100));
+      const newProgress = Math.round((loadedCount / totalAssets) * 100);
+      setProgress(newProgress);
+      
+      if (newProgress < 30) setLoadingText("Pobieranie zasobów...");
+      else if (newProgress < 70) setLoadingText("Optymalizacja multimediów...");
+      else setLoadingText("Przygotowanie do startu...");
+
       if (loadedCount === totalAssets) {
         isComplete = true;
-        setTimeout(onComplete, 800); // small delay for smooth transition
+        setTimeout(onComplete, 1000); // small delay for smooth transition
       }
     };
 
@@ -424,8 +431,11 @@ const Preloader = ({ onComplete, ...props }: { onComplete: () => void, key?: str
         video.preload = 'auto';
         video.muted = true;
         video.playsInline = true;
-        video.oncanplaythrough = handleAssetLoad;
-        video.onerror = handleAssetLoad; // Continue even if one fails
+        
+        const onLoaded = () => handleAssetLoad();
+        video.oncanplaythrough = onLoaded;
+        video.onloadeddata = onLoaded;
+        video.onerror = onLoaded; // Continue even if one fails
         video.load();
       } else {
         const img = new Image();
@@ -442,7 +452,7 @@ const Preloader = ({ onComplete, ...props }: { onComplete: () => void, key?: str
         setProgress(100);
         onComplete();
       }
-    }, 10000); // 10 seconds max loading
+    }, 30000); // Increased to 30s for large videos
 
     return () => clearTimeout(timeout);
   }, [onComplete]);
@@ -479,10 +489,10 @@ const Preloader = ({ onComplete, ...props }: { onComplete: () => void, key?: str
           </svg>
         </motion.div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
-          <div className="text-[10px] md:text-xs font-mono text-[#E6E1DC]/50 tracking-widest uppercase">
-            Ładowanie
+          <div className="text-[10px] md:text-xs font-mono text-[#E6E1DC]/50 tracking-widest uppercase text-center min-w-[200px]">
+            {loadingText}
           </div>
-          <div className="text-sm md:text-base font-mono text-[#E6E1DC] tracking-widest">
+          <div className="text-sm md:text-base font-mono text-[#E6E1DC] tracking-widest font-bold">
             {progress}%
           </div>
         </div>
@@ -714,8 +724,7 @@ const HomePage = () => {
                   className="w-full h-full object-cover"
                   style={{ backgroundColor: "#050505" }}
                 >
-                  <source src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/film%20na%20homepage.mov" type="video/quicktime" />
-                  <source src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/film%20na%20homepage.mov" type="video/mp4" />
+                  <source src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/FILMHOMEPAGE1.mp4" type="video/mp4" />
                 </video>
                 {!isVideoPlaying && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300">
@@ -795,14 +804,15 @@ const HomePage = () => {
           <div className="md:col-span-12 mt-24 w-[98vw] relative left-1/2 -translate-x-1/2">
              <div className="grid grid-cols-1 md:grid-cols-12 gap-2">
                 {/* 1. Full Width Image */}
-                <div className="md:col-span-12 relative aspect-[2272/1420] overflow-hidden">
+                <div className="md:col-span-12 relative aspect-[2272/1420] overflow-hidden bg-[#1a1a1a]">
                    <video 
-                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/brazowymonitorwideo.mp4" 
+                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/BRAZOWYMONITOR1.mp4" 
                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                      autoPlay
                      muted
                      loop
                      playsInline
+                     preload="auto"
                      webkit-playsinline="true"
                      disablePictureInPicture
                      disableRemotePlayback
@@ -810,14 +820,15 @@ const HomePage = () => {
                 </div>
 
                 {/* 2. Left Narrow (5 cols) */}
-                <div className="md:col-span-5 relative aspect-[935/1154] overflow-hidden">
+                <div className="md:col-span-5 relative aspect-[935/1154] overflow-hidden bg-[#1a1a1a]">
                    <video 
-                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/zielonytel.mov" 
+                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/ZIELONYTELEFON1.mp4" 
                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                      autoPlay
                      muted
                      loop
                      playsInline
+                     preload="auto"
                      webkit-playsinline="true"
                      disablePictureInPicture
                      disableRemotePlayback
@@ -825,14 +836,15 @@ const HomePage = () => {
                 </div>
 
                 {/* 3. Right Wide (7 cols) */}
-                <div className="md:col-span-7 relative aspect-[1317/1154] overflow-hidden">
+                <div className="md:col-span-7 relative aspect-[1317/1154] overflow-hidden bg-[#1a1a1a]">
                    <video 
-                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/Timeline%201.mp4" 
+                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/POMARANCZOWYMONITOR1.mp4" 
                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                      autoPlay
                      muted
                      loop
                      playsInline
+                     preload="auto"
                      webkit-playsinline="true"
                      disablePictureInPicture
                      disableRemotePlayback
@@ -840,14 +852,15 @@ const HomePage = () => {
                 </div>
 
                 {/* 4. Full Width Image (Repeat) */}
-                <div className="md:col-span-12 relative aspect-[2272/1420] overflow-hidden">
+                <div className="md:col-span-12 relative aspect-[2272/1420] overflow-hidden bg-[#1a1a1a]">
                    <video 
-                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/laptopmorytzauto.mov" 
+                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/LAPTOPMORYTZAUTO1.mp4" 
                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                      autoPlay
                      muted
                      loop
                      playsInline
+                     preload="auto"
                      webkit-playsinline="true"
                      disablePictureInPicture
                      disableRemotePlayback
@@ -857,7 +870,7 @@ const HomePage = () => {
                 {/* 5. Left Wide (7 cols) */}
                 <div className="md:col-span-7 relative aspect-[1317/1154] overflow-hidden">
                    <video 
-                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/tabletolaptopwideo.mov" 
+                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/NIEBIESKIMONITOR1.mp4" 
                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                      autoPlay
                      muted
@@ -872,7 +885,7 @@ const HomePage = () => {
                 {/* 6. Right Narrow (5 cols) */}
                 <div className="md:col-span-5 relative aspect-[935/1154] overflow-hidden">
                    <video 
-                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/telefonpink.mov" 
+                     src="https://github.com/kidiee558/wideo-do-strony/raw/refs/heads/main/TELEFONPINK1.mp4" 
                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                      autoPlay
                      muted
