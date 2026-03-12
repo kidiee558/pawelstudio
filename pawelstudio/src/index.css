@@ -62,10 +62,18 @@
 .green { color: #16a085; }
 .midnight { color: #2c3e50; }
 
-body {
+html, body {
   background-color: #111;
   color: #E6E1DC;
   overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Custom scrollbar */
