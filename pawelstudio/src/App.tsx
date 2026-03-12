@@ -476,7 +476,7 @@ const HomePage = () => {
     <motion.div 
       ref={containerRef} 
       style={{ color: textColor, backgroundColor: bgColor }}
-      className="min-h-screen font-sans selection:bg-[#E6E1DC] selection:text-[#111] relative"
+      className="min-h-screen font-sans selection:bg-[#E6E1DC] selection:text-[#111] relative overflow-x-hidden w-full"
     >
       {/* Global Background Pattern (Lines) */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -1000,7 +1000,7 @@ const AboutMePage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[#E6E1DC] text-[#111] min-h-screen p-8 md:p-24 relative"
+      className="bg-[#E6E1DC] text-[#111] min-h-screen p-8 md:p-24 relative overflow-x-hidden w-full"
     >
       <div className="fixed top-0 left-0 w-full p-8 z-[100] pointer-events-none">
         <button 
@@ -1710,7 +1710,7 @@ const WebsitesPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[#E6E1DC] text-[#111] min-h-screen font-sans relative z-10"
+      className="bg-[#E6E1DC] text-[#111] min-h-screen font-sans relative z-10 overflow-x-hidden w-full"
     >
         {/* Premium Background */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -2018,7 +2018,7 @@ const ServiceDetailPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[#E6E1DC] text-[#111] min-h-screen relative flex items-center justify-center overflow-hidden"
+      className="bg-[#E6E1DC] text-[#111] min-h-screen relative flex items-center justify-center overflow-hidden w-full"
     >
       {/* Background Lines */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-100">
